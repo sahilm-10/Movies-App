@@ -1,0 +1,18 @@
+Ways to write css in React
+
+1.inline styling 
+ -> style ={JS here{css here}}
+
+2. object
+
+3. external css file
+
+4. external module file
+
+Shortcut for React Fragment = 
+<>
+
+tags
+
+</>
+
