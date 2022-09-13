@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import { movies } from './getMovies'
+import axios from 'axios'
+import API_KEY from '../secrets';
 export default class List extends Component {
   constructor(){
     super();
     this.state = {
       hover:"",
+      parr : [1],
     };
   }
 
@@ -20,6 +23,14 @@ export default class List extends Component {
       });
     };
   
+    async componentDidMount(){
+      console.log("componentDidMount called !!");
+      // console.log(API_KEY);
+      let res = await axios.get(
+        `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
+      );
+      console.log(res.data);
+    }
   render() {
     let movie = movies.results; //fetching movies
        
@@ -48,7 +59,7 @@ export default class List extends Component {
                         <div className="button-wrapper">
                           {
                             this.state.hover == movieObj.id &&
-                            <a href="#" class="btn btn-primary movie-button">
+                            <a href="#" class="btn btn-danger movie-button">
                               Add to Favourites
                             </a>
                             // && -> if true then {} compare to if statement
@@ -63,9 +74,12 @@ export default class List extends Component {
                 <nav aria-label="Page navigation example">
                   <ul class="pagination">
                     <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    {
+                      this.state.parr.map(pageNum => (
+                    <li class="page-item"><a class="page-link" href="#">{pageNum}</a></li>
+                    
+                      ))
+                      }
                     <li class="page-item"><a class="page-link" href="#">Next</a></li>
                   </ul>
                 </nav>
