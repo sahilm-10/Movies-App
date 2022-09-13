@@ -8,6 +8,8 @@ export default class List extends Component {
     this.state = {
       hover:"",
       parr : [1],
+      currPage : 1,
+      movies : []
     };
   }
 
@@ -26,18 +28,21 @@ export default class List extends Component {
     async componentDidMount(){
       console.log("componentDidMount called !!");
       // console.log(API_KEY);
-      let res = await axios.get(
-        `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
+      let ans = await axios.get(
+        `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${this.state.currPage}`
       );
-      console.log(res.data);
+      // console.log(ans.data);
+      this.setState({
+        movies:[...ans.data.results]
+      })
     }
   render() {
     let movie = movies.results; //fetching movies
        
     return (
      <>
-     {
-        movie.length == 0 ?(
+     
+        {this.state.movies.length == 0 ?(
         <div class="spinner-border text-success" role="status">
         <span class="visually-hidden">Loading...</span>
         </div>
@@ -47,7 +52,7 @@ export default class List extends Component {
                     <strong>Trending</strong>
                 </h3>
                 <div className="movie-list">
-                    {movie.map((movieObj)=>(
+                    {this.state.movies.map((movieObj)=>(
                          <div className="card movie-card" 
                          onMouseEnter={() => this.handleEnter(movieObj.id)} 
                          onMouseLeave={this.handleLeave} >
