@@ -13,6 +13,8 @@ export default class List extends Component {
     };
   }
 
+  
+
     handleEnter=(id) =>{
       this.setState({
         hover:id
@@ -24,6 +26,28 @@ export default class List extends Component {
         hover:'',
       });
     };
+    changeMovies = async () =>{
+      console.log("Change Movies")
+      let ans = await axios.get(
+        `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${this.state.currPage}`
+      );
+      // console.log(ans.data);
+      this.setState({
+        movies:[...ans.data.results]
+      })
+    }
+    handleNext = () =>{
+      let tempArr = [];
+      for(let i=1;i<=this.state.parr.length+1;i++){
+        tempArr.push(i);  //[1,2]
+      }
+      this.setState({
+        parr:[...tempArr],
+        currPage : this.state.currPage + 1
+      },this.changeMovies);
+      console.log(this.state.currPage);
+      
+    }
   
     async componentDidMount(){
       console.log("componentDidMount called !!");
@@ -85,7 +109,7 @@ export default class List extends Component {
                     
                       ))
                       }
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    <li class="page-item"><a class="page-link" onClick={this.handleNext}>Next</a></li>
                   </ul>
                 </nav>
                 </div>
